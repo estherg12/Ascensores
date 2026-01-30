@@ -271,10 +271,10 @@ public class VistaCliente extends javax.swing.JFrame {
     
     public void solicitarAscensor()
     {
-        System.out.println(ir.fechaHora()+"Has solicitado un ascensor");
+        System.out.println("Has solicitado un ascensor");
         try {
             ascensorSeleccionado = ir.solicitarAscensor(plantaActual, idCliente);
-            System.out.println(ir.fechaHora()+"Se te ha asignado el ascensor: "+ascensorSeleccionado);
+            System.out.println("Se te ha asignado el ascensor: "+ascensorSeleccionado);
         } catch (RemoteException ex) {
             Logger.getLogger(VistaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -301,11 +301,10 @@ public class VistaCliente extends javax.swing.JFrame {
                     }
                 } catch(Exception e)
                 {
-                    System.out.println(ir.fechaHora()+"Problema de conexión");
+                    System.out.println("Problema de conexión");
                 } 
             }
         });
-        
     }
     
     public void actualizarPlanta(int planta)

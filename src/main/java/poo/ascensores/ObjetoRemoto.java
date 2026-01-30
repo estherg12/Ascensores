@@ -184,6 +184,10 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
         return nuevoEvento;
     }
     
+    public String getAlgoritmo() throws RemoteException {
+        return this.algoritmoActual;
+    }
+    
     // Permite cambiar el algoritmo en tiempo de ejecución
     public void setAlgoritmo(String nuevo) throws RemoteException {
         this.algoritmoActual = nuevo;

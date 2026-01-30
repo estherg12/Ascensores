@@ -12,6 +12,7 @@ public interface InterfazRemota extends Remote{
     public void liberarAscensor(int idAscensor) throws RemoteException;
     public String obtenerEstadisticas() throws RemoteException;
     public String fechaHora() throws RemoteException;
+    public String getAlgoritmo() throws RemoteException;
     public void setAlgoritmo(String nuevo) throws RemoteException ;
     public int getNumAscensores() throws RemoteException;
     public void setNumAscensores(int numAscensores) throws RemoteException;
