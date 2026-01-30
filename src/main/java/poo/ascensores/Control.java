@@ -2,6 +2,7 @@
 package poo.ascensores;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -274,17 +275,27 @@ public class Control extends javax.swing.JFrame {
         jSpinner1.setValue(obj.getNumAscensores());
     }
 
-    public void actualizarDatos(Ascensor[] ascensores, double tiempoMedio) {
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Limpiar
-        for (Ascensor a : ascensores) {
-            model.addRow(new Object[]{
-                a.getId(), 
-                a.isOcupado(), 
-                a.isOcupado() ? a.getIdClienteActual() : "-", 
-                a.getPlantaActual()
-            });
-        }
-        tiempoEsperaField.setText(String.format("%.2f s", tiempoMedio));
+    public void actualizarDatos(ArrayList<Ascensor> ascensores, double tiempoMedio) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try
+                {
+                    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                    model.setRowCount(0); // Limpiar
+                    for (Ascensor a : ascensores) {
+                        model.addRow(new Object[]{
+                            a.getId(), 
+                            a.isOcupado(), 
+                            a.isOcupado() ? a.getIdClienteActual() : "-", 
+                            a.getPlantaActual()
+                        });
+                    }
+                } catch (Exception e) {
+                    System.out.println("Aviso: Intento de pintura de tabla durante refresco de datos.");
+                }
+
+                tiempoEsperaField.setText(String.format("%.2f s", tiempoMedio));
+            }
+        });
     }
 }

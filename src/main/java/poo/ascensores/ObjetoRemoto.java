@@ -3,15 +3,15 @@ package poo.ascensores;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota {
     private int numAscensores;
     private int plantaMin, plantaMax;
-    private Ascensor[] ascensores;
+    private ArrayList<Ascensor> ascensores;
     private Control vista;
-    ArrayList<Ascensor> libres = new ArrayList<>();
     
     private String algoritmoActual;
     
@@ -23,17 +23,18 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
         this.numAscensores = n;
         this.plantaMin = min;
         this.plantaMax = max;
-        this.ascensores = new Ascensor[n];
+        this.ascensores = new ArrayList<Ascensor>();
         for (int i = 0; i < n; i++) {
-            ascensores[i] = new Ascensor(i);
+            Ascensor a = new Ascensor(i);
+            ascensores.add(a);
         }
-        System.out.println(Arrays.toString(ascensores));
+        System.out.println(ascensores);
         this.algoritmoActual = algoritmo;
         this.vista=vista;
         actualizarGUI();
     }
     
-    private void actualizarGUI() {
+    private synchronized void actualizarGUI() {
         if (vista != null) {
             double media = peticionesCompletadas == 0 ? 0 : (double) (tiempoTotalEspera / peticionesCompletadas) / 1000;
             vista.actualizarDatos(ascensores, media);
@@ -41,7 +42,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
     }
 
     public synchronized int solicitarAscensor(int plantaOrigen, int idCliente) throws RemoteException {
-        System.out.println("Cliente " + idCliente + " solicita ascensor en planta " + plantaOrigen);
+        System.out.println(fechaHora()+"Cliente " + idCliente + " solicita ascensor en planta " + plantaOrigen);
         long inicioPeticion = System.currentTimeMillis();
 
         int idSeleccionado = -1;
@@ -51,13 +52,13 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
             
             if (idSeleccionado == -1) {
                 try {
-                    System.out.println("Cliente " + idCliente + " esperando: No hay ascensores libres.");
+                    System.out.println(fechaHora()+"Cliente " + idCliente + " esperando: No hay ascensores libres.");
                     wait(); 
                 } catch (InterruptedException e) { e.printStackTrace(); }
             }
         }
 
-        Ascensor elegido = ascensores[idSeleccionado];
+        Ascensor elegido = ascensores.get(idSeleccionado);
         elegido.setOcupado(true);
         elegido.setIdClienteActual(idCliente);
         moverAscensor(idSeleccionado, plantaOrigen, idCliente);
@@ -70,7 +71,8 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
         return idSeleccionado;
     }
     
-    private int ejecutarAlgoritmo(int plantaOrigen) {        
+    private int ejecutarAlgoritmo(int plantaOrigen) {
+        ArrayList<Ascensor> libres = new ArrayList<>();        
         int result = 0;
         
         for (Ascensor a : ascensores) {
@@ -124,15 +126,15 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
         return Math.abs(a.getPlantaActual() - planta);
     }
 
-    public void irAPlanta(int idAscensor, int plantaDestino, int idCliente) throws RemoteException {
-        System.out.println("Cliente " + idCliente + " va a planta " + plantaDestino + " en ascensor " + idAscensor);
-        Ascensor a = ascensores[idAscensor];
+    public synchronized void irAPlanta(int idAscensor, int plantaDestino, int idCliente) throws RemoteException {
+        System.out.println(fechaHora()+"Cliente " + idCliente + " va a planta " + plantaDestino + " en ascensor " + idAscensor);
+        Ascensor a = ascensores.get(idAscensor);
         moverAscensor(a.getId(), plantaDestino, idCliente);
         actualizarGUI();
     }
     
     public synchronized void moverAscensor(int id, int destino, int idCliente) throws RemoteException {
-        int origen = ascensores[id].getPlantaActual();
+        int origen = ascensores.get(id).getPlantaActual();
         int direccion = (destino > origen) ? 1 : -1;
         
         while (origen != destino)
@@ -141,22 +143,22 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
             int aux = origen;
             try
             {
-                Thread.sleep(1000);
-                ascensores[id].setPlantaActual(aux);
-                System.out.println("[Ascensor " + id + "] En planta: " + ascensores[id].getPlantaActual());
+                Thread.sleep(5000); // 5 segundos por planta
+                ascensores.get(id).setPlantaActual(aux);
+                System.out.println(fechaHora()+"[Ascensor " + id + "] En planta: " + ascensores.get(id).getPlantaActual());
                 actualizarGUI();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
         
-        System.out.println("Ascensor " + id + " ha llegado a planta " + destino);
+        System.out.println(fechaHora()+"Ascensor " + id + " ha llegado a planta " + destino);
     }
 
     public synchronized void liberarAscensor(int idAscensor) throws RemoteException {
-        ascensores[idAscensor].setOcupado(false);
-        System.out.println("Ascensor " + idAscensor + " liberado.");
-        ascensores[idAscensor].setIdClienteActual(-1);
+        ascensores.get(idAscensor).setOcupado(false);
+        System.out.println(fechaHora()+"Ascensor " + idAscensor + " liberado.");
+        ascensores.get(idAscensor).setIdClienteActual(-1);
         actualizarGUI();
         notifyAll(); // Despertar a clientes esperando
     }
@@ -164,31 +166,55 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
     public String obtenerEstadisticas() throws RemoteException {
         String resultado = "";
         if (peticionesCompletadas == 0) {
-            resultado = "No hay datos.";
+            resultado = fechaHora()+"No hay datos.";
         } else
         {
-            resultado = "Tiempo medio de espera: " + (tiempoTotalEspera / peticionesCompletadas) / 1000 + " segundos.";
+            resultado = fechaHora()+"Tiempo medio de espera: " + (tiempoTotalEspera / peticionesCompletadas) / 1000 + " segundos.";
         }
         
         return resultado;
     }
     
+    public synchronized String fechaHora() throws RemoteException
+    {
+        LocalDateTime hoy = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String fechaHora = hoy.format(formatter);
+        String nuevoEvento = "["+fechaHora+"] - ";
+        return nuevoEvento;
+    }
+    
     // Permite cambiar el algoritmo en tiempo de ejecución
     public void setAlgoritmo(String nuevo) throws RemoteException {
         this.algoritmoActual = nuevo;
-        System.out.println("Algoritmo cambiado a: " + nuevo);
+        System.out.println(fechaHora()+"Algoritmo cambiado a: " + nuevo);
     }
 
     public int getNumAscensores() throws RemoteException {
         return numAscensores;
     }
 
-    public void setNumAscensores(int numAscensores) throws RemoteException {
-        this.numAscensores = numAscensores;
-        this.ascensores = new Ascensor[numAscensores];
-        for (int i = 0; i < numAscensores; i++) {
-            ascensores[i] = new Ascensor(i);
+    public void setNumAscensores(int nuevoNumAscensores) throws RemoteException {
+        if(this.numAscensores > nuevoNumAscensores)
+        {
+            // Hay que quitar ascensores (filas)
+            int ascensoresEliminar = numAscensores - nuevoNumAscensores;
+            for (int i = 0; i < ascensoresEliminar; i++)
+            {
+                ascensores.remove(numAscensores-i-1);
+            }
+        } else if (this.numAscensores < nuevoNumAscensores)
+        {
+            // Hay que añadir nuevos ascensores (filas) vacíos
+            int ascensoresAñadir = nuevoNumAscensores - numAscensores;
+            for (int i = 0; i<ascensoresAñadir; i++)
+            {
+                Ascensor a = new Ascensor(numAscensores+i);
+                ascensores.add(a);
+            }
         }
+        
+        this.numAscensores = nuevoNumAscensores;
         actualizarGUI();
     }
 
@@ -215,12 +241,12 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
     public void setTiempoTotalEspera(long tiempoTotalEspera) throws RemoteException {
         this.tiempoTotalEspera = tiempoTotalEspera;
     }
-    
-    public Ascensor[] getAscensores() throws RemoteException {
+
+    public ArrayList<Ascensor> getAscensores() throws RemoteException {
         return ascensores;
     }
 
-    public void setAscensores(Ascensor[] ascensores) throws RemoteException {
+    public void setAscensores(ArrayList<Ascensor> ascensores) throws RemoteException {
         this.ascensores = ascensores;
     }
     

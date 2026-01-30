@@ -2,38 +2,41 @@
 package poo.ascensores;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PintorCliente extends Thread {
     private VistaCliente vista;
     private InterfazRemota ir;
-    private Persona cliente;
-    private Ascensor[] ascensores;
+    private int idCliente = 0;
+    private int plantaActual = 0;
+    private ArrayList<Ascensor> ascensores;
 
-    public PintorCliente(VistaCliente vista, InterfazRemota ir, Persona cl) {
+    public PintorCliente(VistaCliente vista, InterfazRemota ir, int id, int pl) {
         this.vista = vista;
         this.ir = ir;
-        this.cliente = cl;
+        this.idCliente = id;
+        this.plantaActual = pl;
     }    
     
     public void run()
     {
-        try {
-            vista.setInterfazRemota(ir);
-            vista.setVisible(true);
-        } catch (RemoteException ex) {
-            Logger.getLogger(PintorCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        vista.setInterfazRemota(ir);
+        vista.setIdCliente(idCliente);
+        vista.setVisible(true);
         
         while(true)
         {
             try {
                 ascensores = ir.getAscensores();
                 vista.actualizarDatos(ascensores);
-                vista.actualizarPlanta(cliente.getPlantaActual(), ir.getPlantaMin(), ir.getPlantaMax());
+                vista.setPlantaMax(ir.getPlantaMax());
+                vista.setPlantaMin(ir.getPlantaMin());
             } catch (RemoteException ex) {
-                Logger.getLogger(PintorCliente.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Problema de conexión con el Servidor. Parece que se ha finalizado la ejecución del servidor. Se procederá a cerrar el sistema");
+                vista.dispose();
+                break;
             }
             try {
                 sleep(100);
@@ -59,13 +62,20 @@ public class PintorCliente extends Thread {
         this.ir = ir;
     }
 
-    public Persona getCliente() {
-        return cliente;
+    public int getIdCliente() {
+        return idCliente;
     }
 
-    public void setCliente(Persona cliente) {
-        this.cliente = cliente;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
-    
+
+    public int getPlantaActual() {
+        return plantaActual;
+    }
+
+    public void setPlantaActual(int plantaActual) {
+        this.plantaActual = plantaActual;
+    }
     
 }

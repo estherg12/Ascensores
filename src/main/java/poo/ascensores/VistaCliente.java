@@ -2,12 +2,20 @@
 package poo.ascensores;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
 public class VistaCliente extends javax.swing.JFrame {
     private InterfazRemota ir;
-    public VistaCliente() {
+    private int idCliente = 0;
+    private int plantaActual = 0;
+    private int plantaMin = 0, plantaMax = 0;
+    private int ascensorSeleccionado = -1; // Inicialmente ninguno
+    
+    public VistaCliente() throws RemoteException {
         initComponents();
     }
 
@@ -28,8 +36,17 @@ public class VistaCliente extends javax.swing.JFrame {
         bajarButton = new javax.swing.JButton();
         plantasSpinner = new javax.swing.JSpinner();
         irButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        ascensorField = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        idField = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -59,7 +76,7 @@ public class VistaCliente extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("PLANTA");
 
         plantaField.setEditable(false);
@@ -81,6 +98,22 @@ public class VistaCliente extends javax.swing.JFrame {
 
         irButton.setText("Ir");
         irButton.setEnabled(false);
+        irButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                irButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setText("ASCENSOR");
+
+        ascensorField.setEditable(false);
+        ascensorField.setToolTipText("id del ascensor asignado");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setText("ID");
+
+        idField.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -88,28 +121,40 @@ public class VistaCliente extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(plantaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(plantaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ascensorField, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(subirButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bajarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(plantasSpinner, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(irButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                    .addComponent(irButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(plantaField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(plantaField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(ascensorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -129,11 +174,46 @@ public class VistaCliente extends javax.swing.JFrame {
 
     private void subirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subirButtonActionPerformed
         // TODO add your handling code here:
+        solicitarAscensor();
     }//GEN-LAST:event_subirButtonActionPerformed
 
     private void bajarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bajarButtonActionPerformed
         // TODO add your handling code here:
+        solicitarAscensor();
     }//GEN-LAST:event_bajarButtonActionPerformed
+
+    private void irButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_irButtonActionPerformed
+        // TODO add your handling code here:
+        int plantaDestino = (int) plantasSpinner.getValue();
+        try {
+            ir.irAPlanta(ascensorSeleccionado, plantaDestino, idCliente);
+            plantaActual = plantaDestino;
+            actualizarPlanta(plantaActual);
+            
+            ir.liberarAscensor(ascensorSeleccionado);
+            ascensorField.setText("");
+            ascensorSeleccionado = -1;
+        } catch (RemoteException ex) {
+            Logger.getLogger(VistaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        irButton.setEnabled(false);
+        // Se ha llegado a una nueva planta, se puede volver a solicitar un nuevo ascensor
+        subirButton.setEnabled(true); 
+        bajarButton.setEnabled(true);
+    }//GEN-LAST:event_irButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:                                
+        try {
+            if (ir != null && ascensorSeleccionado >= 0) {
+                ir.liberarAscensor(ascensorSeleccionado);
+            }
+        } catch (Exception e) {
+            System.err.println("Error al liberar ascensor en cierre: " + e.getMessage());
+        }
+        System.exit(0); // Matar el hilo
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -165,53 +245,134 @@ public class VistaCliente extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VistaCliente().setVisible(true);
+                try {
+                    new VistaCliente().setVisible(true);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(VistaCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField ascensorField;
     private javax.swing.JButton bajarButton;
+    private javax.swing.JTextField idField;
     private javax.swing.JButton irButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField plantaField;
     private javax.swing.JSpinner plantasSpinner;
     private javax.swing.JButton subirButton;
     // End of variables declaration//GEN-END:variables
-
-    public void setInterfazRemota(InterfazRemota ir) throws RemoteException
-    {
-        this.ir = ir;
-    }
     
-    public void actualizarDatos(Ascensor[] ascensores)
+    public void solicitarAscensor()
     {
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Limpiar
-        for (Ascensor a : ascensores) {
-            model.addRow(new Object[]{
-                a.getId(),
-                a.getPlantaActual(),
-                a.isOcupado()
-            });
+        System.out.println(ir.fechaHora()+"Has solicitado un ascensor");
+        try {
+            ascensorSeleccionado = ir.solicitarAscensor(plantaActual, idCliente);
+            System.out.println(ir.fechaHora()+"Se te ha asignado el ascensor: "+ascensorSeleccionado);
+        } catch (RemoteException ex) {
+            Logger.getLogger(VistaCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
+        ascensorField.setText(String.valueOf(ascensorSeleccionado));
+        irButton.setEnabled(true);
+        subirButton.setEnabled(false); // No se pueden solicitar más de 1 ascensor a la vez
+        bajarButton.setEnabled(false);
     }
     
-    public void actualizarPlanta(int planta, int min, int max)
+    public void actualizarDatos(ArrayList<Ascensor> ascensores)
     {
-        String plantaAnterior = plantaField.getText(); 
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+               try
+                {
+                    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                    model.setRowCount(0); // Limpiar
+                    for (Ascensor a : ascensores) {
+                        model.addRow(new Object[]{
+                            a.getId(),
+                            a.getPlantaActual(),
+                            a.isOcupado()
+                        });
+                    }
+                } catch(Exception e)
+                {
+                    System.out.println(ir.fechaHora()+"Problema de conexión");
+                } 
+            }
+        });
+        
+    }
+    
+    public void actualizarPlanta(int planta)
+    { 
         plantaField.setText(String.valueOf(planta));
         int plantaAux = planta;
         
-        if (String.valueOf(planta).equals(plantaAnterior))
+        if (String.valueOf(planta).equals(plantaField.getText()))
         {
             // Si la planta no ha cambiado, el spinner sigue igual
             plantaAux = (int) plantasSpinner.getValue();
         }
         
-        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(plantaAux, min, max, 1);
+        if(plantaAux > plantaMax)
+        {
+            plantaAux = plantaMax;
+        } else if (plantaAux < plantaMin)
+        {
+            plantaAux = plantaMin;
+        }
+        
+        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(plantaAux, plantaMin, plantaMax, 1);
         plantasSpinner.setModel(spinnerModel);
     }
+
+    public InterfazRemota getIr() {
+        return ir;
+    }
+
+    public void setInterfazRemota(InterfazRemota ir) {
+        this.ir = ir;
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+        this.idField.setText(String.valueOf(idCliente));
+    }
+
+    public int getPlantaActual() {
+        return plantaActual;
+    }
+
+    public void setPlantaActual(int plantaActual) {
+        this.plantaActual = plantaActual;
+    }
+
+    public int getPlantaMin() {
+        return plantaMin;
+    }
+
+    public void setPlantaMin(int plantaMin) {
+        this.plantaMin = plantaMin;
+        actualizarPlanta(plantaActual);
+    }
+
+    public int getPlantaMax() {
+        return plantaMax;
+    }
+
+    public void setPlantaMax(int plantaMax) {
+        this.plantaMax = plantaMax;
+        actualizarPlanta(plantaActual);
+    }
+    
+    
 }

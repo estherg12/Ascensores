@@ -3,6 +3,7 @@ package poo.ascensores;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface InterfazRemota extends Remote{
     public int solicitarAscensor(int plantaOrigen, int idCliente) throws RemoteException;
@@ -10,6 +11,7 @@ public interface InterfazRemota extends Remote{
     public void irAPlanta(int idAscensor, int plantaDestino, int idCliente) throws RemoteException;
     public void liberarAscensor(int idAscensor) throws RemoteException;
     public String obtenerEstadisticas() throws RemoteException;
+    public String fechaHora() throws RemoteException;
     public void setAlgoritmo(String nuevo) throws RemoteException ;
     public int getNumAscensores() throws RemoteException;
     public void setNumAscensores(int numAscensores) throws RemoteException;
@@ -19,6 +21,6 @@ public interface InterfazRemota extends Remote{
     public void setPlantaMax(int plantaMax) throws RemoteException;
     public long getTiempoTotalEspera() throws RemoteException;
     public void setTiempoTotalEspera(long tiempoTotalEspera) throws RemoteException;
-    public Ascensor[] getAscensores() throws RemoteException;
-    public void setAscensores(Ascensor[] ascensores) throws RemoteException;
+    public ArrayList<Ascensor> getAscensores() throws RemoteException;
+    public void setAscensores(ArrayList<Ascensor> ascensores) throws RemoteException;
 }

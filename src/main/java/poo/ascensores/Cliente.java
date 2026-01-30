@@ -12,10 +12,11 @@ public class Cliente {
         // TODO code application logic here
         try {
             InterfazRemota stub = (InterfazRemota) Naming.lookup("//localhost/Ascensor");
-            Persona p = new Persona(stub);
-            p.start();
+            VistaCliente vista = new VistaCliente();
             
-            p.join();
+            int idCliente = (int)(Math.random() * 1000);
+            PintorCliente pc = new PintorCliente(vista, stub, idCliente, 0);
+            pc.start();
         } catch (MalformedURLException | NotBoundException | RemoteException e) {
             e.printStackTrace();
         }
