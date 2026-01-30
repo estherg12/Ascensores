@@ -31,6 +31,7 @@ public class PintorCliente extends Thread {
             try {
                 ascensores = ir.getAscensores();
                 vista.actualizarDatos(ascensores);
+                vista.actualizarPlanta(cliente.getPlantaActual(), ir.getPlantaMin(), ir.getPlantaMax());
             } catch (RemoteException ex) {
                 Logger.getLogger(PintorCliente.class.getName()).log(Level.SEVERE, null, ex);
             }

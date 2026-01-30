@@ -201,10 +201,17 @@ public class VistaCliente extends javax.swing.JFrame {
     
     public void actualizarPlanta(int planta, int min, int max)
     {
-        String plantaText = String.valueOf(planta);
-        plantaField.setText(plantaText);
+        String plantaAnterior = plantaField.getText(); 
+        plantaField.setText(String.valueOf(planta));
+        int plantaAux = planta;
         
-        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(planta, min, max, 1);
+        if (String.valueOf(planta).equals(plantaAnterior))
+        {
+            // Si la planta no ha cambiado, el spinner sigue igual
+            plantaAux = (int) plantasSpinner.getValue();
+        }
+        
+        SpinnerNumberModel spinnerModel = new SpinnerNumberModel(plantaAux, min, max, 1);
         plantasSpinner.setModel(spinnerModel);
     }
 }
