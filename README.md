@@ -56,7 +56,9 @@ El proyecto ha sido analizado con el plugin Source Code Metrics para asegurar ma
 ## Estructura de Carpetas
 src/main/java/poo/ascensores/
 ├── Ascensor.java             # Clase serializable de estado
+
 ├── InterfazRemota.java       # Definición de métodos RMI
+
 ├── ObjetoRemoto.java         # Lógica de negocio y concurrencia
 ├── Servidor.java             # Arranque del sistema (Main)
 ├── Control.java              # GUI del Servidor
