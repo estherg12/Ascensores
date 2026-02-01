@@ -1,4 +1,4 @@
-package tests;
+package tests.unitarios;
 
 import java.rmi.RemoteException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

@@ -86,9 +86,15 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
         }
         else {
 
-            Ascensor seleccionado = libres.get(0);
+            Ascensor seleccionado = null;
 
             for (Ascensor candidato : libres) {
+                if(seleccionado == null)
+                {
+                    seleccionado = candidato;
+                    continue;
+                }
+                
                 switch (algoritmoActual) {
                     case "MAS_CERCANO" -> {
                         if (distancia(candidato, plantaOrigen) < distancia(seleccionado, plantaOrigen)) {
@@ -117,7 +123,7 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
                     }
                 }
             }
-            result = seleccionado.getId();
+            result = seleccionado != null ? seleccionado.getId() : -1;
         }
         return result;
     }
@@ -139,6 +145,12 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
         
         while (origen != destino)
         {
+            // VALIDACIÓN CRÍTICA: ¿El destino sigue estando dentro de los límites actuales?
+            if (destino > plantaMax || destino < plantaMin) {
+                System.out.println(fechaHora() + "[Ascensor " + id + "] ABORTANDO: Destino fuera de límites");
+                break; 
+            }
+            
             origen += direccion;
             int aux = origen;
             try
@@ -190,8 +202,10 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
     
     // Permite cambiar el algoritmo en tiempo de ejecución
     public void setAlgoritmo(String nuevo) throws RemoteException {
-        this.algoritmoActual = nuevo;
-        System.out.println(fechaHora()+"Algoritmo cambiado a: " + nuevo);
+        if (nuevo != null && !nuevo.trim().isEmpty()) {
+            this.algoritmoActual = nuevo;
+            System.out.println(fechaHora()+"Algoritmo cambiado a: " + nuevo);
+        }
     }
 
     public int getNumAscensores() throws RemoteException {
@@ -199,27 +213,34 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
     }
 
     public void setNumAscensores(int nuevoNumAscensores) throws RemoteException {
-        if(this.numAscensores > nuevoNumAscensores)
-        {
-            // Hay que quitar ascensores (filas)
-            int ascensoresEliminar = numAscensores - nuevoNumAscensores;
-            for (int i = 0; i < ascensoresEliminar; i++)
-            {
-                ascensores.remove(numAscensores-i-1);
-            }
-        } else if (this.numAscensores < nuevoNumAscensores)
-        {
-            // Hay que añadir nuevos ascensores (filas) vacíos
-            int ascensoresAñadir = nuevoNumAscensores - numAscensores;
-            for (int i = 0; i<ascensoresAñadir; i++)
-            {
-                Ascensor a = new Ascensor(numAscensores+i);
-                ascensores.add(a);
-            }
+        // Validación de seguridad (Clase de Equivalencia Inválida)
+        if (nuevoNumAscensores < 0) {
+            System.out.println(fechaHora() + "Error: Intento de establecer número de ascensores inválido.");
         }
-        
-        this.numAscensores = nuevoNumAscensores;
-        actualizarGUI();
+        else
+        {
+            if(this.numAscensores > nuevoNumAscensores)
+            {
+                // Hay que quitar ascensores (filas)
+                int ascensoresEliminar = numAscensores - nuevoNumAscensores;
+                for (int i = 0; i < ascensoresEliminar; i++)
+                {
+                    ascensores.remove(numAscensores-i-1);
+                }
+            } else if (this.numAscensores < nuevoNumAscensores)
+            {
+                // Hay que añadir nuevos ascensores (filas) vacíos
+                int ascensoresAñadir = nuevoNumAscensores - numAscensores;
+                for (int i = 0; i<ascensoresAñadir; i++)
+                {
+                    Ascensor a = new Ascensor(numAscensores+i);
+                    ascensores.add(a);
+                }
+            }
+
+            this.numAscensores = nuevoNumAscensores;
+            actualizarGUI();
+        }
     }
 
     public int getPlantaMin() throws RemoteException {
@@ -227,7 +248,13 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
     }
 
     public void setPlantaMin(int plantaMin) throws RemoteException {
-        this.plantaMin = plantaMin;
+        if (plantaMin >= this.plantaMax) {
+            System.out.println(fechaHora() + "Error: La planta mínima no puede superar la máxima.");
+        }
+        else
+        {
+            this.plantaMin = plantaMin;  
+        }
     }
 
     public int getPlantaMax() throws RemoteException {
@@ -235,7 +262,11 @@ public class ObjetoRemoto extends UnicastRemoteObject implements InterfazRemota 
     }
 
     public void setPlantaMax(int plantaMax) throws RemoteException {
-        this.plantaMax = plantaMax;
+        if (plantaMax <= this.plantaMin) {
+            System.out.println(fechaHora() + "Error: La planta máxima no puede ser menor que la mínima.");
+        } else {
+            this.plantaMax = plantaMax;
+        }
     }
 
     public long getTiempoTotalEspera() throws RemoteException {

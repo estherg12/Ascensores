@@ -5,6 +5,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -372,6 +375,69 @@ public class VistaCliente extends javax.swing.JFrame {
         this.plantaMax = plantaMax;
         actualizarPlanta(plantaActual);
     }
-    
+
+    public JButton getBajarButton() {
+        return bajarButton;
+    }
+
+    public void setBajarButton(JButton bajarButton) {
+        this.bajarButton = bajarButton;
+    }
+
+    public JButton getIrButton() {
+        return irButton;
+    }
+
+    public void setIrButton(JButton irButton) {
+        this.irButton = irButton;
+    }
+
+    public JButton getSubirButton() {
+        return subirButton;
+    }
+
+    public void setSubirButton(JButton subirButton) {
+        this.subirButton = subirButton;
+    }
+
+    public int getAscensorSeleccionado() {
+        return ascensorSeleccionado;
+    }
+
+    public void setAscensorSeleccionado(int ascensorSeleccionado) {
+        this.ascensorSeleccionado = ascensorSeleccionado;
+    }
+
+    public JTextField getAscensorField() {
+        return ascensorField;
+    }
+
+    public void setAscensorField(JTextField ascensorField) {
+        this.ascensorField = ascensorField;
+    }
+
+    public JTextField getIdField() {
+        return idField;
+    }
+
+    public void setIdField(JTextField idField) {
+        this.idField = idField;
+    }
+
+    public JTextField getPlantaField() {
+        return plantaField;
+    }
+
+    public void setPlantaField(JTextField plantaField) {
+        this.plantaField = plantaField;
+    }
+
+    public JSpinner getPlantasSpinner() {
+        return plantasSpinner;
+    }
+
+    public void setPlantasSpinner(JSpinner plantasSpinner) {
+        this.plantasSpinner = plantasSpinner;
+    }
     
 }

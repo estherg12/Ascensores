@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="tests.ObjetoRemotoTest" time="40.226" tests="9" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="C:\GithubProjects\Java\Ascensores\target\test-classes;C:\GithubProjects\Java\Ascensores\target\classes;C:\Users\Esthe\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.13.0-M3\junit-jupiter-api-5.13.0-M3.jar;C:\Users\Esthe\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Esthe\.m2\repository\org\junit\platform\junit-platform-commons\1.13.0-M3\junit-platform-commons-1.13.0-M3.jar;C:\Users\Esthe\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="Europe/Madrid"/>
+    <property name="os.name" value="Windows 11"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="user.country" value="ES"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-21\bin"/>
+    <property name="sun.java.command" value="C:\Users\Esthe\AppData\Local\Temp\surefire3158451868927933984\surefirebooter-20260201135010001_3.jar C:\Users\Esthe\AppData\Local\Temp\surefire3158451868927933984 2026-02-01T13-50-09_836-jvmRun1 surefire-20260201135010001_1tmp surefire_0-20260201135010001_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="test" value="tests.ObjetoRemotoTest"/>
+    <property name="surefire.test.class.path" value="C:\GithubProjects\Java\Ascensores\target\test-classes;C:\GithubProjects\Java\Ascensores\target\classes;C:\Users\Esthe\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.13.0-M3\junit-jupiter-api-5.13.0-M3.jar;C:\Users\Esthe\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Esthe\.m2\repository\org\junit\platform\junit-platform-commons\1.13.0-M3\junit-platform-commons-1.13.0-M3.jar;C:\Users\Esthe\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\Esthe"/>
+    <property name="user.language" value="es"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2024-01-16"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-21"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\GithubProjects\Java\Ascensores"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="C:\Users\Esthe\AppData\Local\Temp\surefire3158451868927933984\surefirebooter-20260201135010001_3.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="21.0.2+13-LTS-58"/>
+    <property name="user.name" value="Esther"/>
+    <property name="stdout.encoding" value="Cp1252"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="maven.ext.class.path" value="C:\Program Files\NetBeans-20\netbeans\java\maven-nblib\netbeans-eventspy.jar"/>
+    <property name="localRepository" value="C:\Users\Esthe\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="C:\Users\Esthe\AppData\Local\Temp\"/>
+    <property name="java.version" value="21.0.2"/>
+    <property name="user.dir" value="C:\GithubProjects\Java\Ascensores"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Users\Esthe\AppData\Local\Programs\Python\Launcher\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Common Files\Propellerhead Software\ReWire\;C:\Program Files\Common Files\Propellerhead Software\ReWire\;C:\TDM-GCC-64\bin;C:\Program Files\PostgreSQL\17\bin;C:\Program Files\Git\cmd;C:\Program Files\AutoFirma\AutoFirma;C:\Program Files\Calibre2\;C:\Program Files\nodejs\;C:\Users\Esthe\AppData\Local\Programs\Python\Launcher\;C:\Users\Esthe\.console-ninja\.bin;C:\Users\Esthe\AppData\Local\Microsoft\WindowsApps;C:\Users\Esthe\AppData\Local\GitHubDesktop\bin;C:\Users\Esthe\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\PostgreSQL\16\bin;C:\MinGW\bin;;C:\Users\Esthe\AppData\Local\Microsoft\WindowsApps;C:\Users\Esthe\AppData\Roaming\npm;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="Cp1252"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="21.0.2+13-LTS-58"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="65.0"/>
+  </properties>
+  <testcase name="testEjecutarAlgoritmo_CambioAlgoritmoEnCaliente" classname="tests.ObjetoRemotoTest" time="0.134">
+    <system-out><![CDATA[[poo.ascensores.Ascensor@793be5ca, poo.ascensores.Ascensor@2df9b86, poo.ascensores.Ascensor@37654521]
+Contexto de prueba configurado.
+Ejecutando: testEjecutarAlgoritmo_CambioAlgoritmoEnCaliente
+[01-02-2026 13:50:10] - Algoritmo cambiado a: MAS_CERCANO
+[01-02-2026 13:50:10] - Algoritmo cambiado a: MAS_LEJANO
+Limpieza de recursos post-test.
+]]></system-out>
+  </testcase>
+  <testcase name="testEjecutarAlgoritmo_MasInactivo" classname="tests.ObjetoRemotoTest" time="0.022">
+    <system-out><![CDATA[[poo.ascensores.Ascensor@5b03b9fe, poo.ascensores.Ascensor@37d4349f, poo.ascensores.Ascensor@434a63ab]
+Contexto de prueba configurado.
+Prueba: ejecutarAlgoritmo - MAS_INACTIVO
+[01-02-2026 13:50:10] - Algoritmo cambiado a: MAS_INACTIVO
+[01-02-2026 13:50:10] - Cliente 777 solicita ascensor en planta 1
+[01-02-2026 13:50:10] - Ascensor 0 ha llegado a planta 1
+Limpieza de recursos post-test.
+]]></system-out>
+  </testcase>
+  <testcase name="testEjecutarAlgoritmo_ListaLibresVacia" classname="tests.ObjetoRemotoTest" time="0.002">
+    <system-out><![CDATA[[poo.ascensores.Ascensor@21282ed8, poo.ascensores.Ascensor@36916eb0, poo.ascensores.Ascensor@7bab3f1a]
+Contexto de prueba configurado.
+Ejecutando: testEjecutarAlgoritmo_ListaLibresVacia
+Limpieza de recursos post-test.
+]]></system-out>
+  </testcase>
+  <testcase name="testEjecutarAlgoritmo_MasLejano" classname="tests.ObjetoRemotoTest" time="40.02">
+    <system-out><![CDATA[[poo.ascensores.Ascensor@1e1a0406, poo.ascensores.Ascensor@3cebbb30, poo.ascensores.Ascensor@12aba8be]
+Contexto de prueba configurado.
+Prueba: ejecutarAlgoritmo - MAS_LEJANO
+[01-02-2026 13:50:10] - Algoritmo cambiado a: MAS_LEJANO
+[01-02-2026 13:50:10] - Cliente 888 solicita ascensor en planta 0
+[01-02-2026 13:50:15] - [Ascensor 1] En planta: 7
+[01-02-2026 13:50:20] - [Ascensor 1] En planta: 6
+[01-02-2026 13:50:25] - [Ascensor 1] En planta: 5
+[01-02-2026 13:50:30] - [Ascensor 1] En planta: 4
+[01-02-2026 13:50:35] - [Ascensor 1] En planta: 3
+[01-02-2026 13:50:40] - [Ascensor 1] En planta: 2
+[01-02-2026 13:50:45] - [Ascensor 1] En planta: 1
+[01-02-2026 13:50:50] - [Ascensor 1] En planta: 0
+[01-02-2026 13:50:50] - Ascensor 1 ha llegado a planta 0
+Limpieza de recursos post-test.
+]]></system-out>
+  </testcase>
+  <testcase name="testEjecutarAlgoritmo_TodosOcupados" classname="tests.ObjetoRemotoTest" time="0.002">
+    <system-out><![CDATA[[poo.ascensores.Ascensor@6253c26, poo.ascensores.Ascensor@49049a04, poo.ascensores.Ascensor@71a8adcf]
+Contexto de prueba configurado.
+Prueba: ejecutarAlgoritmo - Sin ascensores libres
+Limpieza de recursos post-test.
+]]></system-out>
+  </testcase>
+  <testcase name="testEjecutarAlgoritmo_MasCercano" classname="tests.ObjetoRemotoTest" time="0.003">
+    <system-out><![CDATA[[poo.ascensores.Ascensor@659499f1, poo.ascensores.Ascensor@51e69659, poo.ascensores.Ascensor@47e2e487]
+Contexto de prueba configurado.
+Prueba: ejecutarAlgoritmo - MAS_CERCANO
+[01-02-2026 13:50:50] - Algoritmo cambiado a: MAS_CERCANO
+Limpieza de recursos post-test.
+]]></system-out>
+  </testcase>
+  <testcase name="testEjecutarAlgoritmo_EmpateDistancia" classname="tests.ObjetoRemotoTest" time="0.001">
+    <system-out><![CDATA[[poo.ascensores.Ascensor@4310d43, poo.ascensores.Ascensor@54a7079e, poo.ascensores.Ascensor@26e356f0]
+Contexto de prueba configurado.
+Ejecutando: testEjecutarAlgoritmo_EmpateDistancia
+[01-02-2026 13:50:50] - Algoritmo cambiado a: MAS_CERCANO
+Limpieza de recursos post-test.
+]]></system-out>
+  </testcase>
+  <testcase name="testSetNumAscensores_ReduccionConAscensorOcupado" classname="tests.ObjetoRemotoTest" time="0.003">
+    <system-out><![CDATA[[poo.ascensores.Ascensor@27f981c6, poo.ascensores.Ascensor@1b11171f, poo.ascensores.Ascensor@1151e434]
+Contexto de prueba configurado.
+Ejecutando: testSetNumAscensores_ReduccionConAscensorOcupado
+Limpieza de recursos post-test.
+]]></system-out>
+  </testcase>
+  <testcase name="testSetNumAscensores_LimiteCero" classname="tests.ObjetoRemotoTest" time="0.003">
+    <system-out><![CDATA[[poo.ascensores.Ascensor@d9345cd, poo.ascensores.Ascensor@2d710f1a, poo.ascensores.Ascensor@29215f06]
+Contexto de prueba configurado.
+Ejecutando: testSetNumAscensores_LimiteCero
+Limpieza de recursos post-test.
+]]></system-out>
+  </testcase>
+</testsuite>
