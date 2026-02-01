@@ -52,21 +52,3 @@ Se utilizaron Mock Objects para testear el comportamiento del cliente de forma a
 El proyecto ha sido analizado con el plugin Source Code Metrics para asegurar mantenibilidad:
 * Complejidad Ciclomática (VG): mantenida bajo niveles óptimos mediante la fragmentación de métodos
 * Sincronización Thread-Safe: uso de java.awt.EventQueue.invokeLater en las actualizaciones de la GUI para evitar errores de renderizado concurrentes
-
-## Estructura de Carpetas
-src/main/java/poo/ascensores/
-├── Ascensor.java             # Clase serializable de estado
-├── InterfazRemota.java       # Definición de métodos RMI
-├── ObjetoRemoto.java         # Lógica de negocio y concurrencia
-├── Servidor.java             # Arranque del sistema (Main)
-├── Control.java              # GUI del Servidor
-├── Cliente.java              # Arranque del usuario (Main)
-├── VistaCliente.java         # GUI del Cliente
-└── PintorCliente.java        # Hilo de refresco visual
-src/test/java/tests/unitarios/
-├── ObjetoRemotoTest.java     # Pruebas de caminos básicos (JUnit)
-├── ObjetoRemotoEquivalencia.java # Pruebas de límites y borde
-└── ObjetoRemotoConcurrenciaTest.java # Pruebas de estrés y hilos
-src/test/java/poo/ascensores/
-├── PintorClienteTest.java    # Prueba de Integración hilo PintorCliente
-└── VistaClienteTest.java     # Prueba de Integración JFrame VistaCliente
